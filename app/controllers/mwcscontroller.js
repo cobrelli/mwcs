@@ -1,25 +1,26 @@
 var moment = require('moment');
 
 function mwcsCtrl($scope, SalaryService) {
-    var salaries = {};
-
     $scope.encoding = 'ISO-8859-1';
     $scope.results = '';
 
     $scope.$watch('results', function (content) {
         console.log('file changed', content);
         if (content) {
-            parseResults(content);
+            $scope.salaries = parseResults(content);
         }
     });
 
     function parseResults(data) {
         var lines = data.content;
         var header = data.header;
+        var salaries = {};
 
         lines.forEach(function (line) {
             var properties = line.split(',');
             if (properties.length === header.length) {
+                var id = properties[1];
+                var name = properties[0];
                 var date = properties[2].split('.');
                 var startTime = properties[3].split(':');
                 var finishTime = properties[4].split(':');
@@ -88,13 +89,29 @@ function mwcsCtrl($scope, SalaryService) {
                 }
 
                 dailyWage += SalaryService.calculateDailyWage(lengthLeft / 60);
-
+                var totalPay = SalaryService.calculateTotalDailyPay(dailyWage, eveningWorkCompensation, overtimeCompensation);
+                
+                console.log('id: ' + properties[1] + ', name: ' + properties[0]);
                 console.log('dailyWage', dailyWage);
                 console.log('overtimeCompensation', overtimeCompensation);
                 console.log('eveningWorkCompensation', eveningWorkCompensation);
                 console.log('total', SalaryService.calculateTotalDailyPay(dailyWage, eveningWorkCompensation, overtimeCompensation));
+                if (!salaries[id]) {
+                    salaries[id] = {
+                        name: name,
+                        salary: 0,
+                        totalOvertimeCompensation: 0,
+                        totalEveningWorkCompensation: 0
+                    }
+                }
+                
+                salaries[id].salary += totalPay;
+                salaries[id].totalOvertimeCompensation += overtimeCompensation;
+                salaries[id].totalEveningWorkCompensation += eveningWorkCompensation;
             }
         });
+        
+        return salaries;
     }
 }
 angular.module('mwcs').controller('mwcsCtrl', ['$scope', 'SalaryService', mwcsCtrl]);

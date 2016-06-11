@@ -19,7 +19,9 @@
   </div>
 
   <div class="salary-grid">
-    
+    <ul>
+      <li ng-repeat="salary in salaries">{{salary.name + ', $' + salary.salary.toFixed(2)}}</li>
+    </ul>
   </div>
 
   <script src="/build.js"></script>
