@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body ng-app="mwcs" ng-controller="mwcsCtrl">
+
+  <h1>Monthly Wage Calculation System</h1>
+
+  <div class="encoding input">
+    <label>Encoding</label>
+    <input type="text" class="encoding" ng-model="encoding">
+  </div>
+
+  <div class="csv-selector">
+    <file-reader encoding="encoding"></file-reader>
+  </div>
+
+  <div class="salary-grid">
+    
+  </div>
+
+  <script src="/build.js"></script>
+</body>
+
+</html>
