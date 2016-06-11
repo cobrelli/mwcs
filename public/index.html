@@ -20,7 +20,7 @@
 
   <div class="salary-grid">
     <ul>
-      <li ng-repeat="salary in salaries">{{salary.name + ', $' + salary.salary.toFixed(2)}}</li>
+      <li class="salary" ng-repeat="salary in salaries">{{salary.id + ', ' + salary.name + ', salary: $' + salary.salary.toFixed(2)}}</li>
     </ul>
   </div>
 

@@ -98,6 +98,7 @@ function mwcsCtrl($scope, SalaryService) {
                 console.log('total', SalaryService.calculateTotalDailyPay(dailyWage, eveningWorkCompensation, overtimeCompensation));
                 if (!salaries[id]) {
                     salaries[id] = {
+                        id: id,
                         name: name,
                         salary: 0,
                         totalOvertimeCompensation: 0,
