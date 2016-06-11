@@ -7,10 +7,10 @@ angular.module('mwcs', ['ui.router', 'ngResource']);
 
 function mwcsCtrl($scope) {
     $scope.encoding = 'ISO-8859-1';
-    $scope.salaries = '';
-
-    $scope.$watch('salaries', function (salaries) {
-        console.log('file changed', salaries);
+    $scope.results = '';
+    
+    $scope.$watch('results', function (content) {
+        console.log('file changed', content);
     });
 }
 angular.module('mwcs').controller('mwcsCtrl', ['$scope', mwcsCtrl]);
@@ -18,8 +18,8 @@ angular.module('mwcs').controller('mwcsCtrl', ['$scope', mwcsCtrl]);
 angular.module('mwcs').directive('fileReader', [function () {
     return {
         scope: {
-            encoding: '=',
-            results: '=salaries'
+            encoding: '=?',
+            results: '=?'
         },
         template: '<input type="file"></input>',
         link: function (scope, element) {
