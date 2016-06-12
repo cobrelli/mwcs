@@ -16,23 +16,23 @@ function SalaryService() {
         return hours * (wage + eveningWorkCompensation);
     }
 
-    function calculateOvertimeCompensation(hours) {
+    function calculateOvertimeCompensation(overtimeHours) {
         var compensation = 0;
-        if (hours > 2) {
+        if (overtimeHours > 2) {
             compensation += 2 * overtimeFirstTwoHours * wage;
-            hours -= 2;
+            overtimeHours -= 2;
         } else {
-            compensation += hours * overtimeFirstTwoHours * wage;
+            compensation += overtimeHours * overtimeFirstTwoHours * wage;
             return compensation
         }
-        if (hours > 2) {
+        if (overtimeHours > 2) {
             compensation += 2 * overtimeNextTwoHours * wage;
-            hours -= 2;
+            overtimeHours -= 2;
         } else {
-            compensation += hours * overtimeNextTwoHours * wage;
+            compensation += overtimeHours * overtimeNextTwoHours * wage;
             return compensation
         }
-        compensation += hours * wage;
+        compensation += overtimeHours * wage;
         return compensation;
     }
 
