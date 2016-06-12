@@ -4,16 +4,20 @@ function SalaryService() {
     var overtimeFirstTwoHours = 0.25;
     var overtimeNextTwoHours = 0.5;
 
+    function round(value, decimals) {
+        return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+    }
+
     function calculateTotalDailyPay(dailyWage, totalEveningCompensation, totalOvertimeCompensation) {
-        return dailyWage + totalEveningCompensation + totalOvertimeCompensation;
+        return round(dailyWage + totalEveningCompensation + totalOvertimeCompensation, 2);
     }
 
     function calculateDailyWage(hours) {
-        return hours * wage;
+        return round(hours * wage, 2);
     }
 
     function calculateEveningWorkCompensation(hours) {
-        return hours * eveningWorkCompensation;
+        return round(hours * eveningWorkCompensation, 2);
     }
 
     function calculateOvertimeCompensation(overtimeHours) {
@@ -23,17 +27,17 @@ function SalaryService() {
             overtimeHours -= 2;
         } else {
             compensation += overtimeHours * overtimeFirstTwoHours * wage;
-            return compensation
+            return round(compensation, 2)
         }
         if (overtimeHours > 2) {
             compensation += 2 * overtimeNextTwoHours * wage;
             overtimeHours -= 2;
         } else {
             compensation += overtimeHours * overtimeNextTwoHours * wage;
-            return compensation
+            return round(compensation, 2)
         }
         compensation += overtimeHours * wage;
-        return compensation;
+        return round(compensation, 2);
     }
 
     return {
