@@ -55,7 +55,7 @@ function mwcsCtrl($scope, SalaryService) {
                 }
 
                 if (startHours < 6) {
-                    var morningWorkTime = finishHours < 6 ? finishDateTime : moment(startDateTime).hours(6).minutes(0);
+                    var morningWorkTime = finishHours < 6 && !shiftContinuesNextDay ? finishDateTime : moment(startDateTime).hours(6).minutes(0);
                     var diff = morningWorkTime.diff(startDateTime, 'minutes');
                     eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
                 }
@@ -71,7 +71,6 @@ function mwcsCtrl($scope, SalaryService) {
                     var nextDayMorningWorkEnd = finishHours >= 6 ? moment(finishDateTime).hours(6).minutes(0) : finishDateTime;
                     var diff = nextDayMorningWorkEnd.diff(moment(finishDateTime).hours(0).minutes(0), 'minutes');
                     eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
-
                     if (finishHours > 18 || (finishHours === 18 && finishMinutes > 0)) {
                         diff = finishDateTime.diff(moment(finishDateTime).hours(16).minutes(0), 'minutes');
                         eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
