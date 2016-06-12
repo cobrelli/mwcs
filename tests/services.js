@@ -21,21 +21,21 @@ describe('Salary service', function () {
     });
 
     it('should calculate overtime correctly for first two hours', function () {
-        expect(salaryService.calculateOvertimeCompensation(1)).to.equal(0.9375);
-        expect(salaryService.calculateOvertimeCompensation(1.5)).to.equal(1.40625);
-        expect(salaryService.calculateOvertimeCompensation(2)).to.equal(1.875);
+        expect(salaryService.calculateOvertimeCompensation(1)).to.equal(0.94);
+        expect(salaryService.calculateOvertimeCompensation(1.5)).to.equal(1.41);
+        expect(salaryService.calculateOvertimeCompensation(2)).to.equal(1.88);
     });
 
     it('should calculate overtime correctly for next two hours', function () {
-        expect(salaryService.calculateOvertimeCompensation(2.5)).to.equal(2.8125);
+        expect(salaryService.calculateOvertimeCompensation(2.5)).to.equal(2.81);
         expect(salaryService.calculateOvertimeCompensation(3)).to.equal(3.75);
-        expect(salaryService.calculateOvertimeCompensation(4)).to.equal(5.625);
+        expect(salaryService.calculateOvertimeCompensation(4)).to.equal(5.63);
     });
 
     it('should calculate overtime correctly for subsequent hours', function () {
-        expect(salaryService.calculateOvertimeCompensation(5)).to.equal(9.375);
-        expect(salaryService.calculateOvertimeCompensation(8)).to.equal(20.625);
-        expect(salaryService.calculateOvertimeCompensation(10)).to.equal(28.125);
+        expect(salaryService.calculateOvertimeCompensation(5)).to.equal(9.38);
+        expect(salaryService.calculateOvertimeCompensation(8)).to.equal(20.63);
+        expect(salaryService.calculateOvertimeCompensation(10)).to.equal(28.13);
     });
 
     it('should calculate total daily pay correctly', function () {
@@ -43,9 +43,9 @@ describe('Salary service', function () {
         expect(dailyWage).to.equal(33.75);
         var eveningWork = salaryService.calculateEveningWorkCompensation(1); // 1.15
         expect(eveningWork).to.equal(1.15);
-        var overtime = salaryService.calculateOvertimeCompensation(1); // 0.9375
-        expect(overtime).to.equal(0.9375);
+        var overtime = salaryService.calculateOvertimeCompensation(1); // 0.94
+        expect(overtime).to.equal(0.94);
 
-        expect(salaryService.calculateTotalDailyPay(dailyWage, eveningWork, overtime)).to.equal(35.8375);
+        expect(salaryService.calculateTotalDailyPay(dailyWage, eveningWork, overtime)).to.equal(35.84);
     });
 });
