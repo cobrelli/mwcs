@@ -7,7 +7,6 @@ angular.module('mwcs').directive('fileReader', [function () {
         template: '<input type="file"></input>',
         link: function (scope, element) {
             element.on('change', function (event) {
-                console.log('element changed');
                 var fileReader = new FileReader();
                 fileReader.onload = function (onLoadEvent) {
                     scope.$apply(function () {

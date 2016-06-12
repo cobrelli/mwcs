@@ -4,6 +4,7 @@ function SalaryService() {
     var overtimeFirstTwoHours = 0.25;
     var overtimeNextTwoHours = 0.5;
 
+    // Round value to decimals provided (used to mitigate problems with floating points)
     function round(value, decimals) {
         return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
     }
@@ -22,20 +23,21 @@ function SalaryService() {
 
     function calculateOvertimeCompensation(overtimeHours) {
         var compensation = 0;
-        if (overtimeHours > 2) {
+        if (overtimeHours > 2) { // Calculate overtime with first two hours
             compensation += 2 * overtimeFirstTwoHours * wage;
             overtimeHours -= 2;
         } else {
             compensation += overtimeHours * overtimeFirstTwoHours * wage;
             return round(compensation, 2)
         }
-        if (overtimeHours > 2) {
+        if (overtimeHours > 2) { // Calculate overtime with next two hours
             compensation += 2 * overtimeNextTwoHours * wage;
             overtimeHours -= 2;
         } else {
             compensation += overtimeHours * overtimeNextTwoHours * wage;
             return round(compensation, 2)
         }
+        // Calculate any remaining overtime
         compensation += overtimeHours * wage;
         return round(compensation, 2);
     }

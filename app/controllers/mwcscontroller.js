@@ -10,6 +10,7 @@ function mwcsCtrl($scope, SalaryService) {
         }
     });
 
+    // Calculate total salary of each worker
     function parseResults(data) {
         var lines = data.content;
         var header = data.header;
@@ -36,7 +37,6 @@ function mwcsCtrl($scope, SalaryService) {
                 var finishDateTime = moment(new Date(year, month - 1, day, finishHours, finishMinutes));
 
                 var shiftContinuesNextDay = false;
-                var totalLength;
                 
                 var overtimeCompensation = 0;
                 var eveningWorkCompensation = 0;
@@ -46,7 +46,7 @@ function mwcsCtrl($scope, SalaryService) {
                     shiftContinuesNextDay = true;
                 }
 
-                totalLength = finishDateTime.diff(startDateTime, 'minutes');
+                var totalLength = finishDateTime.diff(startDateTime, 'minutes');
                 var dailyWage = SalaryService.calculateDailyWage(totalLength / 60);
 
                 // Calculate overtimeCompensation
@@ -54,23 +54,32 @@ function mwcsCtrl($scope, SalaryService) {
                     overtimeCompensation = SalaryService.calculateOvertimeCompensation((totalLength - dayLength) / 60);
                 }
 
+                // Handle evening work before 6 AM
                 if (startHours < 6) {
+                    // If shift finishes before 6 and does not continue next day then we should 
+                    // compare to finish time, otherwise compare to 06:00
                     var morningWorkTime = finishHours < 6 && !shiftContinuesNextDay ? finishDateTime : moment(startDateTime).hours(6).minutes(0);
                     var diff = morningWorkTime.diff(startDateTime, 'minutes');
                     eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
                 }
 
+                // Handle evening work from 18 to 24
                 if (finishHours > 18 || (finishHours === 18 && finishMinutes > 0) || shiftContinuesNextDay) {
+                    // If shift starts after 18:00 we should use shift start as lower limit, otherwise use 18:00
                     var eveningWorkTimeStart = startHours >= 18 ? startDateTime : moment(startDateTime).hours(18).minutes(0);
+                    // If shift continues next day we should use 24:00 as upper limit, otherwise we should use end time 
                     var eveningWorkTimeEnd = shiftContinuesNextDay ? moment(finishDateTime).hours(0).minutes(0) : finishDateTime;
                     var diff = eveningWorkTimeEnd.diff(eveningWorkTimeStart, 'minutes');
                     eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
                 }
 
+                // Handle evening work after 24
                 if (shiftContinuesNextDay) {
+                    // If finish hours end after 6:00 we should use 6:00 as upper limit of comparison, otherwise use finishtime 
                     var nextDayMorningWorkEnd = finishHours >= 6 ? moment(finishDateTime).hours(6).minutes(0) : finishDateTime;
                     var diff = nextDayMorningWorkEnd.diff(moment(finishDateTime).hours(0).minutes(0), 'minutes');
                     eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
+                    // Handle evening work continuing next evening
                     if (finishHours > 18 || (finishHours === 18 && finishMinutes > 0)) {
                         diff = finishDateTime.diff(moment(finishDateTime).hours(16).minutes(0), 'minutes');
                         eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
@@ -79,6 +88,7 @@ function mwcsCtrl($scope, SalaryService) {
 
                 var totalPay = SalaryService.calculateTotalDailyPay(dailyWage, eveningWorkCompensation, overtimeCompensation);
                 
+                // If worker has not yet been added, init new worker object
                 if (!salaries[id]) {
                     salaries[id] = {
                         id: id,
