@@ -28,6 +28,7 @@
   "devDependencies": {
     "angular-mocks": "^1.5.6",
     "grunt-execute": "^0.2.2",
+    "grunt-mocha-test": "^0.12.7",
     "jsdom": "^9.2.1",
     "mocha": "^2.5.3",
     "webpack": "^1.13.1",
