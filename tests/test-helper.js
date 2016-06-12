@@ -15,3 +15,5 @@ require('angular-mocks');
 global.angular = window.angular;
 global.inject = global.angular.mock.inject;
 global.ngModule = global.angular.mock.module;
+
+angular.module('mwcs', []);

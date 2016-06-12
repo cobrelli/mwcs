@@ -1,8 +1,5 @@
 var expect = require('chai').expect;
 require('./test-helper');
-
-angular.module('mwcs', []);
-
 require('../app/services/salaryservice');
 
 var salaryService;
