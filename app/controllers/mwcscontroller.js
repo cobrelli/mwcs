@@ -5,7 +5,6 @@ function mwcsCtrl($scope, SalaryService) {
     $scope.results = '';
 
     $scope.$watch('results', function (content) {
-        console.log('file changed', content);
         if (content) {
             $scope.salaries = parseResults(content);
         }
@@ -38,22 +37,17 @@ function mwcsCtrl($scope, SalaryService) {
 
                 var shiftContinuesNextDay = false;
                 var totalLength;
-                var dailyWage = 0;
+                
                 var overtimeCompensation = 0;
                 var eveningWorkCompensation = 0;
-
+ 
                 if (finishHours < startHours) { // Shift continues to next day
-                    console.log('shiftContinuesNextDay');
                     finishDateTime.add(1, 'days');
                     shiftContinuesNextDay = true;
                 }
 
-                console.log('startDateTime', startDateTime.toString());
-                console.log('finishDateTime', finishDateTime.toString());
-
                 totalLength = finishDateTime.diff(startDateTime, 'minutes');
-                var lengthLeft = totalLength;
-                console.log('totalLength', totalLength);
+                var dailyWage = SalaryService.calculateDailyWage(totalLength / 60);
 
                 // Calculate overtimeCompensation
                 if (totalLength > dayLength) {
@@ -63,7 +57,6 @@ function mwcsCtrl($scope, SalaryService) {
                 if (startHours < 6) {
                     var morningWorkTime = finishHours < 6 ? finishDateTime : moment(startDateTime).hours(6).minutes(0);
                     var diff = morningWorkTime.diff(startDateTime, 'minutes');
-                    lengthLeft -= diff;
                     eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
                 }
 
@@ -71,31 +64,22 @@ function mwcsCtrl($scope, SalaryService) {
                     var eveningWorkTimeStart = startHours >= 18 ? startDateTime : moment(startDateTime).hours(18).minutes(0);
                     var eveningWorkTimeEnd = shiftContinuesNextDay ? moment(finishDateTime).hours(0).minutes(0) : finishDateTime;
                     var diff = eveningWorkTimeEnd.diff(eveningWorkTimeStart, 'minutes');
-                    lengthLeft -= diff;
                     eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
                 }
 
                 if (shiftContinuesNextDay) {
                     var nextDayMorningWorkEnd = finishHours >= 6 ? moment(finishDateTime).hours(6).minutes(0) : finishDateTime;
                     var diff = nextDayMorningWorkEnd.diff(moment(finishDateTime).hours(0).minutes(0), 'minutes');
-                    lengthLeft -= diff;
                     eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
 
                     if (finishHours > 18 || (finishHours === 18 && finishMinutes > 0)) {
                         diff = finishDateTime.diff(moment(finishDateTime).hours(16).minutes(0), 'minutes');
-                        lengthLeft -= diff;
                         eveningWorkCompensation += SalaryService.calculateEveningWorkCompensation(diff / 60);
                     }
                 }
 
-                dailyWage += SalaryService.calculateDailyWage(lengthLeft / 60);
                 var totalPay = SalaryService.calculateTotalDailyPay(dailyWage, eveningWorkCompensation, overtimeCompensation);
                 
-                console.log('id: ' + properties[1] + ', name: ' + properties[0]);
-                console.log('dailyWage', dailyWage);
-                console.log('overtimeCompensation', overtimeCompensation);
-                console.log('eveningWorkCompensation', eveningWorkCompensation);
-                console.log('total', SalaryService.calculateTotalDailyPay(dailyWage, eveningWorkCompensation, overtimeCompensation));
                 if (!salaries[id]) {
                     salaries[id] = {
                         id: id,
@@ -111,7 +95,6 @@ function mwcsCtrl($scope, SalaryService) {
                 salaries[id].totalEveningWorkCompensation += eveningWorkCompensation;
             }
         });
-        
         return salaries;
     }
 }

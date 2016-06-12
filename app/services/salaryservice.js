@@ -13,7 +13,7 @@ function SalaryService() {
     }
 
     function calculateEveningWorkCompensation(hours) {
-        return hours * (wage + eveningWorkCompensation);
+        return hours * eveningWorkCompensation;
     }
 
     function calculateOvertimeCompensation(overtimeHours) {

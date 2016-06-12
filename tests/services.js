@@ -16,8 +16,8 @@ describe('Salary service', function () {
     });
 
     it('should calculate evening work compensation correctly', function () {
-        expect(salaryService.calculateEveningWorkCompensation(1)).to.equal(4.9);
-        expect(salaryService.calculateEveningWorkCompensation(10)).to.equal(49);
+        expect(salaryService.calculateEveningWorkCompensation(1)).to.equal(1.15);
+        expect(salaryService.calculateEveningWorkCompensation(10)).to.equal(11.5);
     });
 
     it('should calculate overtime correctly for first two hours', function () {
@@ -39,10 +39,10 @@ describe('Salary service', function () {
     });
 
     it('should calculate total daily pay correctly', function () {
-        var dailyWage = salaryService.calculateDailyWage(8); // 30
-        expect(dailyWage).to.equal(30);
-        var eveningWork = salaryService.calculateEveningWorkCompensation(1); // 4.9
-        expect(eveningWork).to.equal(4.9);
+        var dailyWage = salaryService.calculateDailyWage(9); // 33.75
+        expect(dailyWage).to.equal(33.75);
+        var eveningWork = salaryService.calculateEveningWorkCompensation(1); // 1.15
+        expect(eveningWork).to.equal(1.15);
         var overtime = salaryService.calculateOvertimeCompensation(1); // 0.9375
         expect(overtime).to.equal(0.9375);
 
