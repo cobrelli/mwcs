@@ -50,5 +50,5 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['jshint']);
   grunt.registerTask('build', ['webpack:build', 'copy:dist']);
   grunt.registerTask('serve', ['webpack:build', 'copy:dist','execute']);
-  grunt.registerTask('test', ['mochaTest']);
+  grunt.registerTask('test', ['webpack:build', 'copy:dist', 'mochaTest']);
 };
