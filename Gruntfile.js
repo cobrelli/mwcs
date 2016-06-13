@@ -1,17 +1,5 @@
 module.exports = function (grunt) {
   grunt.initConfig({
-    jshint: {
-      files: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
-      options: {
-        globals: {
-          jQuery: true
-        }
-      }
-    },
-    watch: {
-      files: ['<%= jshint.files %>'],
-      tasks: ['jshint']
-    },
     mochaTest: {
       test: {
         src: ['tests/**/*.js'],
@@ -40,14 +28,12 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-execute');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', ['webpack:build', 'copy:dist','execute']);
   grunt.registerTask('build', ['webpack:build', 'copy:dist']);
   grunt.registerTask('serve', ['webpack:build', 'copy:dist','execute']);
   grunt.registerTask('test', ['webpack:build', 'copy:dist', 'mochaTest']);
