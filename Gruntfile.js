@@ -30,6 +30,13 @@ module.exports = function (grunt) {
       target: {
         src: ['server.js']
       }
+    },
+    copy: {
+      dist: {
+        files: [
+          {src: 'node_modules/bootstrap/dist/css/bootstrap.min.css', dest: 'public/bootstrap.min.css'}
+        ]
+      }
     }
   });
 
@@ -38,9 +45,10 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-execute');
   grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.registerTask('default', ['jshint']);
-  grunt.registerTask('build', ['webpack:build']);
-  grunt.registerTask('serve', ['webpack:build', 'execute']);
+  grunt.registerTask('build', ['webpack:build', 'copy:dist']);
+  grunt.registerTask('serve', ['webpack:build', 'copy:dist','execute']);
   grunt.registerTask('test', ['mochaTest']);
 };
