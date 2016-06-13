@@ -4,7 +4,7 @@ angular.module('mwcs').directive('fileReader', [function () {
             encoding: '=?',
             results: '=?'
         },
-        template: '<input type="file"></input>',
+        template: '<label class="btn btn-danger btn-file">Select file<input type="file" style="display: none;"></label>',
         link: function (scope, element) {
             element.on('change', function (event) {
                 var fileReader = new FileReader();

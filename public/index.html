@@ -3,25 +3,42 @@
 
 <head>
   <link rel="stylesheet" type="text/css" href="main.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
 </head>
 
 <body ng-app="mwcs" ng-controller="mwcsCtrl">
 
-  <h1>Monthly Wage Calculation System</h1>
+  <div class="content container">
+    <h1 class="title">Monthly Wage Calculation System</h1>
 
-  <div class="encoding input">
-    <label>Encoding</label>
-    <input type="text" class="encoding" ng-model="encoding">
-  </div>
+    <div class="file-input">
+      <div class="encoding row">
+        <label class="pull-left">Encoding</label>
+        <input type="text" class="encoding-input col-md-2" ng-model="encoding">
+      </div>
 
-  <div class="csv-selector">
-    <file-reader encoding="encoding" results="results"></file-reader>
-  </div>
-
-  <div class="salary-grid">
-    <ul>
-      <li class="salary" ng-repeat="salary in salaries">{{salary.id + ', ' + salary.name + ', salary: $' + salary.salary.toFixed(2)}}</li>
-    </ul>
+      <div class="csv-selector row">
+        <file-reader encoding="encoding" results="results"></file-reader>
+      </div>
+    </div>
+    <div class="salary-grid" ng-if="salaries" ng-cloak>
+      <table class="table">
+        <tr class="header">
+          <td>ID</td>
+          <td>Name</td>
+          <td>Total salary</td>
+          <td>Evening work</td>
+          <td>Overtime</td>
+        </tr>
+        <tr ng-repeat="salary in salaries">
+          <td>{{salary.id}}</td>
+          <td>{{salary.name}}</td>
+          <td>{{salary.salary.toFixed(2)}}</td>
+          <td>{{salary.totalEveningWorkCompensation.toFixed(2)}}</td>
+          <td>{{salary.totalOvertimeCompensation.toFixed(2)}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 
   <script src="/build.js"></script>

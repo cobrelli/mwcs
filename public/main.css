@@ -1,0 +1,32 @@
+.title {
+    text-align: center;
+}
+
+.file-input {
+    margin-left: 25%;
+    margin-top: 30px;
+}
+
+.encoding-input {
+    margin-left: 10px;
+}
+
+.csv-selector {
+    margin-top: 10px;
+}
+
+.salary-grid {
+    margin-top: 10px;
+}
+
+.salary-grid .header {
+    background-color: cadetblue        
+}
+
+.salary {
+    margin-top: 2px;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
