@@ -19,3 +19,4 @@ Todo:
 - Improve layout
 - Set up build with dist/, minify and split to vendor & app
 - Perhaps support different encodings? (atm everything is setup except watch that updates encoding in directive)
+- Add linting & watch tasks
