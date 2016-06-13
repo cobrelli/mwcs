@@ -1,3 +1,6 @@
+Monthly Wage Calculation System:
+Reads worker shift information from CSV-file and outputs a table of worker salaries
+
 How to run:
 npm install
 grunt serve
